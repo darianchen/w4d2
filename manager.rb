@@ -1,6 +1,6 @@
 require_relative "employee"
 class Manager < Employee
-    attr_reader :employees, :name
+    attr_reader :employees, :name, :salary
 
     def initialize(name,title,salary,boss)
         super
@@ -9,7 +9,18 @@ class Manager < Employee
     end
 
     def bonus(multipler)
-        #@employees.inject(0) { |sum ,employee| sum.salary + employee.salary }
+        sum = 0
+        queue = [self]
+        until queue.empty?
+            current = queue.pop
+            if current.employees.nil?
+                current.employees.each do |employee|
+                    queue.unshift(employee)
+                    sum += employee.salary
+                end
+            end
+        end
+        sum
     end
 
 end
@@ -21,7 +32,7 @@ david = Employee.new("David", "TA", 10000, darren)
 
 
 
-# p ned.bonus(5)
+p ned.bonus(5)
 # p darren.bonus(4)
 # p david.bonus(3)
 
