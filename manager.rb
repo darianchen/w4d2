@@ -1,3 +1,4 @@
+require "byebug"
 require_relative "employee"
 class Manager < Employee
     attr_reader :employees, :name, :salary
@@ -5,7 +6,7 @@ class Manager < Employee
     def initialize(name,title,salary,boss)
         super
         @employees = []
-        add_sub if !boss.nil?
+        
     end
 
     def bonus(multipler)
@@ -13,14 +14,14 @@ class Manager < Employee
         queue = [self]
         until queue.empty?
             current = queue.pop
-            if current.employees.nil?
+            if !current.employees.nil?
                 current.employees.each do |employee|
-                    queue.unshift(employee)
                     sum += employee.salary
+                    queue.unshift(employee)
                 end
             end
         end
-        sum
+        sum *= multipler
     end
 
 end
@@ -33,7 +34,7 @@ david = Employee.new("David", "TA", 10000, darren)
 
 
 p ned.bonus(5)
-# p darren.bonus(4)
-# p david.bonus(3)
+p darren.bonus(4)
+p david.bonus(3)
 
 
